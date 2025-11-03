@@ -1,0 +1,20 @@
+{
+  "name": "@teek/utils",
+  "version": "0.0.1",
+  "description": "all utils are settled here",
+  "dependencies": {
+    "crypto-js": "catalog:",
+    "element-plus": "catalog:",
+    "file-saver": "catalog:",
+    "jsencrypt": "catalog:",
+    "mitt": "catalog:",
+    "nprogress": "catalog:",
+    "vue": "catalog:",
+    "xlsx": "catalog:"
+  },
+  "devDependencies": {
+    "@types/crypto-js": "catalog:",
+    "@types/file-saver": "catalog:",
+    "@types/nprogress": "catalog:"
+  }
+}

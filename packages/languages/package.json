@@ -1,0 +1,8 @@
+{
+  "name": "@teek/languages",
+  "version": "0.0.1",
+  "description": "all languages are settled here",
+  "dependencies": {
+    "vue-i18n": "catalog:"
+  }
+}

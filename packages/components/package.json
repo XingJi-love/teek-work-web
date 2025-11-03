@@ -1,0 +1,28 @@
+{
+  "name": "@teek/components",
+  "version": "0.0.1",
+  "description": "all components are settled here",
+  "dependencies": {
+    "@codemirror/commands": "catalog:codemirror",
+    "@codemirror/language": "catalog:codemirror",
+    "@codemirror/lint": "catalog:codemirror",
+    "@codemirror/merge": "catalog:codemirror",
+    "@codemirror/state": "catalog:codemirror",
+    "@codemirror/view": "catalog:codemirror",
+    "@element-plus/icons-vue": "catalog:",
+    "@tinymce/tinymce-vue": "catalog:",
+    "@wangeditor/editor": "catalog:wangeditor",
+    "@wangeditor/editor-for-vue": "catalog:wangeditor",
+    "@wangeditor/plugin-upload-attachment": "catalog:wangeditor",
+    "codemirror": "catalog:codemirror",
+    "element-plus": "catalog:",
+    "sortablejs": "catalog:",
+    "tinymce": "catalog:",
+    "vue": "catalog:",
+    "vue-router": "catalog:"
+  },
+  "devDependencies": {
+    "@iconify/vue": "catalog:",
+    "@types/sortablejs": "catalog:"
+  }
+}

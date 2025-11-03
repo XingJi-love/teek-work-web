@@ -1,0 +1,107 @@
+<script setup lang="tsx" name="Post">
+import type { DialogFormProps, ProPageInstance, TableColumn } from "@teek/components";
+import type { Post } from "@/common/api/system/post";
+import { ElMessageBox, ElSwitch } from "element-plus";
+import { ProPage, downloadByData, useNamespace } from "teek";
+import { listPage, addPost, editPost, removePost, removeBatch, exportExcel } from "@/common/api/system/post";
+import { useDictStore } from "@/pinia";
+import { useChange, usePermission } from "@/composables";
+import { elFormProps, formColumns } from "./form-columns";
+
+const ns = useNamespace("post");
+
+const proPageInstance = useTemplateRef<ProPageInstance>("proPageInstance");
+
+const { statusChange } = useChange(
+  "postName",
+  "岗位",
+  (row, status) => editPost({ id: row.id, postId: row.postId, status }),
+  () => proPageInstance.value?.search()
+);
+
+const columns: TableColumn<Post.PostInfo>[] = [
+  { type: "selection", fixed: "left", width: 80 },
+  { prop: "postCode", label: "岗位编码", search: { el: "el-input" } },
+  { prop: "postName", label: "岗位名称", search: { el: "el-input" } },
+  { prop: "orderNum", label: "排序" },
+  {
+    prop: "status",
+    label: "状态",
+    optionField: { value: "dictValue", label: "dictLabel" },
+    options: () => useDictStore().getDictData("sys_normal_status"),
+    search: { el: "el-select" },
+    render: ({ row }) => {
+      return (
+        <>
+          {row.status !== undefined && (
+            <ElSwitch
+              v-model={row.status}
+              activeValue={1}
+              inactiveValue={0}
+              activeText="启用"
+              inactiveText="停用"
+              inlinePrompt
+              onChange={value => statusChange(value, row)}
+            />
+          )}
+        </>
+      );
+    },
+  },
+  { prop: "createTime", label: "创建时间" },
+  { prop: "operation", label: "操作", width: 160, fixed: "right" },
+];
+
+const { hasAuth } = usePermission();
+
+const dialogFormProps: DialogFormProps = {
+  form: { elFormProps, columns: formColumns },
+  id: ["id", "postId"],
+  addApi: addPost,
+  editApi: editPost,
+  removeApi: removePost,
+  removeBatchApi: removeBatch,
+  disableAdd: !hasAuth("system:post:add"),
+  disableEdit: !hasAuth("system:post:edit"),
+  disableRemove: !hasAuth("system:post:remove"),
+  disableRemoveBatch: !hasAuth("system:post:remove"),
+  dialog: {
+    title: (_, status) => (status === "add" ? "新增" : "编辑"),
+    width: "45%",
+    height: 220,
+    top: "5vh",
+    closeOnClickModal: false,
+  },
+};
+
+const exportFile = (_: Record<string, any>[], searchParam: Record<string, any>) => {
+  ElMessageBox.confirm("确认导出吗？", "温馨提示", { type: "warning" }).then(() => {
+    exportExcel(searchParam).then(res => {
+      downloadByData(res, `post_${new Date().getTime()}.xlsx`);
+    });
+  });
+};
+</script>
+
+<template>
+  <div :class="ns.b()">
+    <ProPage
+      ref="proPageInstance"
+      :request-api="listPage"
+      :columns
+      :search-props="{ searchCols: { xs: 1, sm: 1, md: 2, lg: 3, xl: 3 } }"
+      :dialog-form-props
+      :border="false"
+      :export-file
+      :disabled-tool-button="!hasAuth('system:post:export') ? ['export'] : []"
+    ></ProPage>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+@use "@teek/styles/mixins/bem" as *;
+
+@include b(post) {
+  height: 100%;
+}
+</style>

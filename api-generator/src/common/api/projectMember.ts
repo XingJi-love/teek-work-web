@@ -1,0 +1,31 @@
+import { http } from "@/common/http";
+
+export namespace ProjectMember {
+  export interface ProjectMemberInfo {
+    id: number; // 主键
+    userId: string; // 用户名
+    projectId: string; // 项目 ID
+    projectName: string; // 项目名称
+    projectRole: string; // 项目角色（1 管理员 2 普通成员 3 只读成员 4 禁止访问）
+    belongType: number; // 0 项目创建者 1 项目加入者
+    teamId: string; // 团队 ID
+    createTime: string; // 创建时间
+  }
+}
+
+const baseUri = "/projectMember";
+
+export const listProjectRole = (teamId: string, userId: string) => {
+  return http.get<httpNs.Response<ProjectMember.ProjectMemberInfo[]>>(`${baseUri}/listProjectRole/${teamId}/${userId}`);
+};
+
+export const editProjectMember = (data: Partial<ProjectMember.ProjectMemberInfo>) => {
+  return http.put<httpNs.Response<Boolean>>(baseUri, data);
+};
+
+/**
+ * 获取我的项目角色
+ */
+export const getMyProjectRole = (projectId: string) => {
+  return http.post<httpNs.Response<string>>(`${baseUri}/getMyProjectRole/${projectId}`);
+};

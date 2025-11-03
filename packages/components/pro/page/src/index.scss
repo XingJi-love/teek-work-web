@@ -1,0 +1,10 @@
+@use "@teek/styles/mixins/bem" as *;
+@use "@teek/styles/mixins/namespace" as *;
+
+@include b(pro-page) {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+  overflow: auto;
+}

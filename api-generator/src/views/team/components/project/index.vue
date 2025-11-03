@@ -1,0 +1,240 @@
+<script setup lang="tsx" name="Project">
+import type { SearchColumn } from "teek";
+import { ProjectCard } from "@/components";
+import { View, Delete, Setting, Plus } from "@element-plus/icons-vue";
+import { useDialog, ProForm, ProSearch, message, useNamespace, useHandleData } from "teek";
+import { listProject, addProject, editProject, removeProject, type Project } from "@/common/api/project";
+import { listSelectDataSource, type DataSource } from "@/common/api/dataSource";
+import { rules, formColumns } from "./form-columns";
+
+const ns = useNamespace("project");
+
+const { open } = useDialog();
+
+const route = useRoute();
+
+export interface CommonTab {
+  id?: number;
+  label: string;
+  name: string;
+}
+
+// ElTabs 组件配置项
+const tabs: CommonTab[] = [
+  {
+    label: "我的项目",
+    name: "all",
+  },
+  {
+    label: "我创建的",
+    name: "creator",
+  },
+  {
+    label: "我加入的",
+    name: "joiner",
+  },
+];
+
+// 项目分类
+const belongType: Recordable = {
+  all: 0,
+  creator: 1,
+  joiner: 2,
+};
+
+const activeName = ref("all");
+const projectList = ref<Project.ProjectInfo[]>([]);
+const formModel = ref<Record<string, any>>({});
+const searchModel = reactive<Record<string, any>>({ projectName: "", dataSourceId: [] });
+
+const dialogTitle: { [propName: string]: string } = {
+  add: "添加项目",
+  edit: "编辑项目",
+};
+
+const searchColumns: SearchColumn[] = [
+  {
+    prop: "projectName",
+    label: "项目名称",
+    el: "el-input",
+    elProps: { placeholder: "请输入 项目名称" },
+  },
+  {
+    prop: "dataSourceId",
+    label: "数据源",
+    el: "el-select",
+    options: async () => {
+      if (selectDataSource.value.length) return { data: selectDataSource.value };
+      const res = await listSelectDataSource(teamId.value);
+      selectDataSource.value = res.data;
+      return res;
+    },
+    optionField: { value: "dataSourceId", label: "dataSourceName" },
+    elProps: {
+      multiple: true,
+      placeholder: "请选择 数据库",
+      collapseTags: true,
+      collapseTagsTooltip: true,
+      maxCollapseTags: 2,
+    },
+  },
+];
+
+const teamId = computed(() => route.meta.params?.teamId);
+
+onMounted(() => {
+  initProject();
+});
+
+// 初始化项目
+const initProject = (params?: Project.ProjectSearch) => {
+  listProject({ ...params, belongType: belongType[activeName.value], teamId: teamId.value }).then(res => {
+    if (res.code === 200) projectList.value = res.data;
+  });
+};
+
+// 查询事件
+const handleSearch = () => {
+  initProject(searchModel);
+};
+
+// 重置事件
+const handleReset = () => {
+  initProject();
+  searchModel.projectName = "";
+  searchModel.dataSourceId = [];
+};
+
+// 切换标签事件
+const switchTab = () => {
+  initProject();
+};
+
+// 缓存查询的数据源列表
+const selectDataSource = ref<DataSource.DataSourceInfo[]>([]);
+
+if (formColumns[formColumns.length - 1].prop !== "dataSourceId") {
+  formColumns.push({
+    prop: "dataSourceId",
+    label: "数据源",
+    el: "el-select",
+    options: async () => {
+      if (selectDataSource.value.length) return { data: selectDataSource.value };
+      const res = await listSelectDataSource(teamId.value);
+      selectDataSource.value = res.data;
+      return res;
+    },
+    optionField: { value: "dataSourceId", label: "dataSourceName" },
+    elProps: { multiple: true, placeholder: "请选择 数据库" },
+  });
+}
+
+const openDialogForm = (
+  api: (data: any) => Promise<httpNs.Response<string>>,
+  status: string,
+  successMessage: string
+) => {
+  open({
+    title: dialogTitle[status],
+    height: 300,
+    onConfirm: async () => {
+      const res = await api({ ...formModel.value, teamId: teamId.value } as Project.ProjectInsert);
+      if (res.code === 200) {
+        initProject();
+        return message.success(successMessage);
+      }
+    },
+    render: () => (
+      <ProForm
+        v-model={formModel.value}
+        el-form-props={{ rules }}
+        columns={formColumns}
+        notCleanModelKeys={["id", "projectId"]}
+        showFooter={false}
+      />
+    ),
+  });
+};
+
+const handleAddProject = () => {
+  formModel.value = {};
+  openDialogForm(addProject, "add", "新增成功");
+};
+
+const handleEditProject = (item: Project.ProjectInfo) => {
+  formModel.value = { ...item };
+  openDialogForm(editProject, "edit", "编辑成功");
+};
+
+const handleRemoveProject = (item: Project.ProjectInfo) => {
+  useHandleData("此操作将永久删除该项目，是否继续？", async () => {
+    const res = await removeProject({ projectId: item.projectId });
+    if (res.code === 200) {
+      initProject();
+      return message.success("删除成功");
+    }
+  });
+};
+
+const router = useRouter();
+const handleHeaderClick = (item: Project.ProjectInfo) => {
+  const { projectId, projectName } = item;
+
+  router.push(`/project/${projectId}/${projectName}`);
+};
+</script>
+
+<template>
+  <div :class="ns.b()">
+    <ProSearch v-model="searchModel" :columns="searchColumns" @search="handleSearch" @reset="handleReset" />
+
+    <el-tabs type="border-card" v-model="activeName" @tab-change="switchTab">
+      <el-tab-pane v-for="item in tabs" :key="item.name" :label="item.label" :name="item.name" :lazy="true">
+        <el-row :gutter="10">
+          <el-col :xs="12" :sm="12" :md="6" :lg="6" :xl="4" v-for="item in projectList" :key="item.id">
+            <ProjectCard @header-click="handleHeaderClick(item)">
+              <template #header>
+                <span>{{ item.projectName }}</span>
+              </template>
+              <div class="mt-0 mb-2.5 font-medium sle">{{ item.baseUrl }}</div>
+              <div class="line-clamp-3 text-neutral-400">
+                {{ item.description }}
+              </div>
+              <template #footer>
+                <el-button link type="primary" :icon="View" @click="handleHeaderClick(item)"></el-button>
+                <el-button link type="danger" :icon="Delete" @click="handleRemoveProject(item)"></el-button>
+                <el-button link type="warning" :icon="Setting" @click="handleEditProject(item)"></el-button>
+              </template>
+            </ProjectCard>
+          </el-col>
+          <el-col :xs="12" :sm="12" :md="6" :lg="6" :xl="4">
+            <project-card
+              :only-body="true"
+              class="text-neutral-400 cursor-pointer text-center hover:!bg-zinc-200 leading-[220px]"
+              @click="handleAddProject"
+            >
+              <el-icon class="inline-block !text-[60px]"><Plus /></el-icon>
+            </project-card>
+          </el-col>
+        </el-row>
+      </el-tab-pane>
+    </el-tabs>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+@use "@teek/styles/mixins/bem" as *;
+
+@include b(project) {
+  :deep(.k-search-form) {
+    padding: 0;
+    margin: 0;
+    border: none;
+    box-shadow: none;
+  }
+
+  :deep(.el-dialog .item-base-url label) {
+    padding-right: 5px;
+  }
+}
+</style>

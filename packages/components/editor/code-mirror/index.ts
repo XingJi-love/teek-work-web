@@ -1,0 +1,8 @@
+import { useInstall } from "@teek/utils";
+import index from "./src/index.vue";
+
+export const CodeMirror = useInstall(index);
+
+export type * from "./src/types";
+
+export default index;
