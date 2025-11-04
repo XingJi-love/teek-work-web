@@ -1,5 +1,5 @@
 <script setup lang="tsx" name="UserGroupLinkUser">
-import type { DialogFormProps, ProTableInstance, TableColumn } from "teek";
+import type { DialogFormProps, ProTableInstance, PageColumn } from "teek";
 import type { User } from "@/common/api/user/user";
 import { ProTable } from "teek";
 import { addUsersToGroup, editUserGroupLinkInfo, removeUserFromUserGroup } from "@/common/api/user/userGroup";
@@ -22,7 +22,7 @@ watchEffect(() => (requestParam.userGroupId = props.userGroupId));
 const proTableRef = shallowRef<ProTableInstance>();
 
 // 表格列配置项
-const columns: TableColumn<User.UserLinkInfo>[] = [
+const columns: PageColumn<User.UserLinkInfo>[] = [
   { type: "selection", fixed: "left", width: 10 },
   { prop: "username", label: "用户名称", minWidth: 120, search: { el: "el-input" } },
   { prop: "nickname", label: "用户昵称", minWidth: 120, search: { el: "el-input" } },
@@ -75,7 +75,6 @@ const dialogFormProps: DialogFormProps = {
       :columns
       :search-props="{ searchCols: { xs: 1, sm: 1, md: 3, lg: 3, xl: 3 } }"
       :dialog-form-props
-      :border="false"
       row-key="linkId"
       height="100%"
       :init-show-search="false"

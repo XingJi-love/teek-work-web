@@ -1,5 +1,5 @@
 <script setup lang="tsx" name="LoginLog">
-import type { ProPageInstance, TableColumn } from "@teek/components";
+import type { ProPageInstance, PageColumn } from "@teek/components";
 import { ProPage, downloadByData, useNamespace } from "teek";
 import { ElMessageBox, ElMessage } from "element-plus";
 import { Delete } from "@element-plus/icons-vue";
@@ -68,7 +68,7 @@ const sortChange = (data: { column: any; prop: string; order: any }) => {
   initRequestParams.orderRuleList = [{ column: data.prop, type: data.order === "descending" ? "desc" : "asc" }];
 };
 
-const columns: TableColumn<LoginLog.LoginLogInfo>[] = [
+const columns: PageColumn<LoginLog.LoginLogInfo>[] = [
   { type: "selection", fixed: "left", width: 80 },
   { prop: "loginId", label: "登录编号", width: 170 },
   { prop: "username", label: "用户账号", search: { el: "el-input" } },
@@ -118,7 +118,6 @@ const exportFile = (_: Record<string, any>[], searchParam: Record<string, any>) 
       :init-request-params="initRequestParams"
       :columns
       :search-props="{ searchCols: { xs: 1, sm: 1, md: 3, lg: 5, xl: 5 } }"
-      :border="false"
       @sort-change="sortChange"
       :default-sort="{ prop: 'loginTime', order: 'descending' }"
       :export-file

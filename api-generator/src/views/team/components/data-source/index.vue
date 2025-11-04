@@ -1,5 +1,5 @@
 <script setup lang="tsx" name="DataSource">
-import type { DialogFormProps, FormColumn, TableColumn } from "@teek/components";
+import type { DialogFormProps, FormColumn, PageColumn } from "@teek/components";
 import type { DataSource } from "@/common/api/dataSource";
 import { Loading } from "@element-plus/icons-vue";
 import { useNamespace, ProPage, isArray, message } from "teek";
@@ -27,7 +27,7 @@ const handleConnect = async (row: DataSource.DataSourceInfo & { dataSourceTypeDr
   if (res.code === 200) message.success("测试连接成功。2s 后可以再次测试连接，请勿一直重复点击！");
 };
 
-const columns: TableColumn<DataSource.DataSourceInfo>[] = [
+const columns: PageColumn<DataSource.DataSourceInfo>[] = [
   { type: "index", label: "#", width: 50 },
   { prop: "dataSourceName", label: "数据源名称", width: 200, search: { el: "el-input" } },
   {

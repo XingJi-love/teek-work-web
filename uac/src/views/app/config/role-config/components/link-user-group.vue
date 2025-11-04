@@ -1,5 +1,5 @@
 <script setup lang="tsx" name="RoleLinkUserGroup">
-import type { DialogFormProps, TableColumn } from "teek";
+import type { DialogFormProps, PageColumn } from "teek";
 import { ProPage } from "teek";
 import { addUserGroupsToRole, removeUserGroupFromRole } from "@/common/api/system/role";
 import { listUserGroupByRoleId, type UserGroup } from "@/common/api/user/userGroup";
@@ -19,7 +19,7 @@ const requestParam = reactive({ roleId: props.roleId });
 watchEffect(() => (requestParam.roleId = props.roleId));
 
 // 表格列配置项
-const columns: TableColumn<UserGroup.UserGroupLinkInfo>[] = [
+const columns: PageColumn<UserGroup.UserGroupLinkInfo>[] = [
   { type: "selection", fixed: "left", width: 10 },
   { prop: "groupName", label: "用户组名", minWidth: 120, search: { el: "el-input", key: "userGroupName" } },
   { prop: "intro", label: "描述", minWidth: 120 },
@@ -80,7 +80,6 @@ const dialogFormProps: DialogFormProps = {
       :columns
       :search-props="{ searchCols: { xs: 1, sm: 1, md: 3, lg: 3, xl: 3 } }"
       :dialog-form-props
-      :border="false"
       row-key="linkId"
       height="100%"
       :init-show-search="false"

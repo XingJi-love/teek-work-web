@@ -1,5 +1,5 @@
 <script setup lang="tsx" name="Post">
-import type { DialogFormProps, ProPageInstance, TableColumn } from "@teek/components";
+import type { DialogFormProps, ProPageInstance, PageColumn } from "@teek/components";
 import type { Post } from "@/common/api/system/post";
 import { ElMessageBox, ElSwitch } from "element-plus";
 import { ProPage, downloadByData, useNamespace } from "teek";
@@ -19,7 +19,7 @@ const { statusChange } = useChange(
   () => proPageInstance.value?.search()
 );
 
-const columns: TableColumn<Post.PostInfo>[] = [
+const columns: PageColumn<Post.PostInfo>[] = [
   { type: "selection", fixed: "left", width: 80 },
   { prop: "postCode", label: "岗位编码", search: { el: "el-input" } },
   { prop: "postName", label: "岗位名称", search: { el: "el-input" } },
@@ -89,9 +89,7 @@ const exportFile = (_: Record<string, any>[], searchParam: Record<string, any>) 
       ref="proPageInstance"
       :request-api="listPage"
       :columns
-      :search-props="{ searchCols: { xs: 1, sm: 1, md: 2, lg: 3, xl: 3 } }"
       :dialog-form-props
-      :border="false"
       :export-file
       :disabled-tool-button="!hasAuth('system:post:export') ? ['export'] : []"
     ></ProPage>

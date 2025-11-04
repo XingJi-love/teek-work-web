@@ -1,9 +1,9 @@
 import type { DialogFormColumn, ElFormProps } from "@teek/components";
-import type { FormRules } from "element-plus";
 import type { User } from "@/common/api/user/user";
-import { userSelectPostList } from "@/common/api/system/post";
-import { listDeptTreeList } from "@/common/api/system/dept";
+import type { FormRules } from "element-plus";
 import { useDictStore } from "@/pinia";
+import { listDeptTreeList } from "@/common/api/system/dept";
+import { userSelectPostList } from "@/common/api/system/post";
 import { useFormRules } from "@/composables";
 
 const { validatePassword, validatePhone } = useFormRules();
@@ -22,7 +22,9 @@ export const elFormProps: ElFormProps = {
   rules: rules,
 };
 
-export const useFormColumns = (defaultValue: ComputedRef<string>) => {
+export const useFormColumns = (defaultValue?: ComputedRef<string>) => {
+  const { getDictData } = useDictStore();
+
   const columns: DialogFormColumn<User.UserInfo>[] = [
     {
       prop: "username",
@@ -36,7 +38,7 @@ export const useFormColumns = (defaultValue: ComputedRef<string>) => {
       defaultValue: "1",
       el: "el-select",
       optionField: { value: "dictValue", label: "dictLabel" },
-      options: () => useDictStore().getDictData("sys_normal_status"),
+      options: () => getDictData("sys_normal_status"),
     },
     {
       prop: "nickname",
@@ -58,7 +60,7 @@ export const useFormColumns = (defaultValue: ComputedRef<string>) => {
       label: "性别",
       el: "el-select",
       valueFormat: "string",
-      options: () => useDictStore().getDictData("sys_user_sex"),
+      options: () => getDictData("sys_user_sex"),
       optionField: { value: "dictValue", label: "dictLabel" },
       elProps: { clearable: true, placeholder: "请选择 性别" },
     },
@@ -109,5 +111,5 @@ export const useFormColumns = (defaultValue: ComputedRef<string>) => {
     },
   ];
 
-  return { columns };
+  return columns;
 };

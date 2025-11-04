@@ -1,5 +1,5 @@
 <script setup lang="tsx" name="DictType">
-import type { DialogFormProps, TableColumn } from "@teek/components";
+import type { DialogFormProps, PageColumn } from "@teek/components";
 import type { DictType } from "@/common/api/dictType";
 import { ElLink, ElMessageBox } from "element-plus";
 import { ProPage, BlankDrawer, PointTag, downloadByData } from "teek";
@@ -24,7 +24,7 @@ const isCascadeColorMap: Record<string, any> = {
   1: "#395ae3",
 };
 
-const columns: TableColumn<DictType.DictTypeInfo>[] = [
+const columns: PageColumn<DictType.DictTypeInfo>[] = [
   { type: "index", label: "#", width: 80 },
   {
     prop: "dictCode",
@@ -91,13 +91,7 @@ const exportFile = (_: Record<string, any>[], searchParam: Record<string, any>) 
 <template>
   <div :class="ns.b()">
     <div :class="ns.e('table')">
-      <ProPage
-        :request-api="listPage"
-        :columns="columns"
-        :search-props="{ searchCols: { xs: 1, sm: 1, md: 2, lg: 3, xl: 3 } }"
-        :dialogFormProps
-        :exportFile
-      ></ProPage>
+      <ProPage :request-api="listPage" :columns="columns" :dialogFormProps :exportFile></ProPage>
     </div>
 
     <BlankDrawer v-model="drawer" size="55%" title="字典数据配置">

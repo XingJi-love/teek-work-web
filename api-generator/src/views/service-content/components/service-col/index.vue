@@ -354,7 +354,6 @@ const dialogFormProps: DialogFormProps = {
     highlight-current-row
     :columns
     :dialog-form-props
-    :search-props="{ searchCols: { xs: 1, sm: 1, md: 2, lg: 3, xl: 3 } }"
     @row-click="handleRowClick"
   >
     <template #head-left-after>

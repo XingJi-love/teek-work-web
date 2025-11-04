@@ -98,15 +98,7 @@ export const dynamicRoutes: RouterConfigRaw[] = [
     name: "UserManage",
     component: "/system/user/index",
     meta: {
-      title: "用户信息",
-    },
-  },
-  {
-    path: "/dept-manage",
-    name: "DeptManage",
-    component: "/system/dept/index",
-    meta: {
-      title: "部门管理",
+      title: "用户管理",
     },
   },
   {
@@ -116,6 +108,39 @@ export const dynamicRoutes: RouterConfigRaw[] = [
     meta: {
       title: "岗位管理",
     },
+  },
+  {
+    path: "/dept-manage",
+    name: "DeptManage",
+    meta: {
+      title: "部门管理",
+    },
+    children: [
+      {
+        path: "list",
+        name: "DeptList",
+        component: "/system/dept/list/index",
+        meta: {
+          title: "部门列表",
+        },
+      },
+      {
+        path: "user",
+        name: "DeptUserList",
+        component: "/system/dept/user/index",
+        meta: {
+          title: "用户列表",
+        },
+      },
+      {
+        path: "post",
+        name: "DeptPostList",
+        component: "/system/dept/post/index",
+        meta: {
+          title: "岗位列表",
+        },
+      },
+    ],
   },
   {
     path: "/system-monitor",

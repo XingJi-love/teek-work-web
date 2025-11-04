@@ -130,10 +130,5 @@ const dialogFormProps: DialogFormProps = {
 </script>
 
 <template>
-  <ProPage
-    :request-api="listAppPage"
-    :columns
-    :search-props="{ searchCols: { xs: 1, sm: 1, md: 2, lg: 3, xl: 3 } }"
-    :dialog-form-props
-  ></ProPage>
+  <ProPage :request-api="listAppPage" :columns :dialog-form-props></ProPage>
 </template>

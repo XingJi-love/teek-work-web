@@ -1,5 +1,5 @@
 <script setup lang="tsx" name="Menu">
-import type { DialogFormProps, TableColumn, ProPageInstance } from "teek";
+import type { DialogFormProps, PageColumn, ProPageInstance } from "teek";
 import type { Menu } from "@/common/api/system/menu";
 import { ElMessageBox, ElSwitch } from "element-plus";
 import { Plus } from "@element-plus/icons-vue";
@@ -26,7 +26,7 @@ const initRequestParams = reactive({
   appId: route.params.appId as string,
 });
 
-const columns: TableColumn<Menu.MenuInfo>[] = [
+const columns: PageColumn<Menu.MenuInfo>[] = [
   { prop: "menuName", label: "菜单名称", align: "left", search: { el: "el-input" } },
   {
     prop: "icon",
@@ -151,9 +151,7 @@ const exportFile = (_: Record<string, any>[], searchParam: Record<string, any>) 
       :request-api="listMenuTreeTableByApp"
       :columns
       :init-request-params="initRequestParams"
-      :search-props="{ searchCols: { xs: 1, sm: 1, md: 2, lg: 3, xl: 3 } }"
       :dialog-form-props
-      :border="false"
       :page-scope="false"
       :export-file
       :disabled-tool-button="!hasAuth('system:menu:export') ? ['export'] : []"

@@ -1,5 +1,5 @@
 <script setup lang="tsx" name="Dept">
-import type { DialogFormProps, ProPageInstance, TableColumn } from "teek";
+import type { DialogFormProps, ProPageInstance, PageColumn } from "teek";
 import type { Dept } from "@/common/api/system/dept";
 import { ElMessageBox, ElSwitch } from "element-plus";
 import { Plus } from "@element-plus/icons-vue";
@@ -20,7 +20,7 @@ const { statusChange } = useChange(
   () => proPageInstance.value?.search()
 );
 
-const columns: TableColumn<Dept.DeptTreeTable>[] = [
+const columns: PageColumn<Dept.DeptTreeTable>[] = [
   { prop: "deptName", label: "部门名称", align: "left", search: { el: "el-input" } },
   { prop: "orderNum", label: "排序", width: 80 },
   {
@@ -91,9 +91,7 @@ const exportFile = (_: Record<string, any>[], searchParam: Record<string, any>) 
       ref="proPageInstance"
       :request-api="listDeptTreeTable"
       :columns
-      :search-props="{ searchCols: { xs: 1, sm: 1, md: 2, lg: 3, xl: 3 } }"
       :dialog-form-props
-      :border="false"
       :page-scope="false"
       :export-file
       :disabled-tool-button="!hasAuth('system:dept:export') ? ['export'] : []"

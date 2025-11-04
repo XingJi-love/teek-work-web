@@ -1,5 +1,5 @@
 <script setup lang="tsx" name="Role">
-import type { DialogFormProps, ProPageInstance, TableColumn } from "teek";
+import type { DialogFormProps, ProPageInstance, PageColumn } from "teek";
 import type { Role } from "@/common/api/system/role";
 import { ElMessageBox, ElSwitch } from "element-plus";
 import { ProPage, downloadByData, useNamespace } from "teek";
@@ -24,7 +24,7 @@ const initRequestParams = reactive({
   appId: route.params.appId as string,
 });
 
-const columns: TableColumn<Role.RoleInfo>[] = [
+const columns: PageColumn<Role.RoleInfo>[] = [
   { type: "selection", fixed: "left", width: 80 },
   { type: "index", label: "#", width: 80 },
   { prop: "roleCode", label: "角色编码", search: { el: "el-input" } },
@@ -66,7 +66,7 @@ const dialogFormProps: DialogFormProps = {
     columns: formColumns,
   },
   id: ["id", "roleId"],
-  addApi: addRole,
+  addApi: data => addRole({ ...data, appId: initRequestParams.appId }),
   editApi: editRole,
   removeApi: removeRole,
   removeBatchApi: removeBatch,

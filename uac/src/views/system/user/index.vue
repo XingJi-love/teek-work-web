@@ -1,41 +1,27 @@
-<script setup lang="tsx" name="UserInfo">
-import type { TreeKey } from "element-plus";
-import type { DialogFormProps, ProPageInstance, TableColumn } from "teek";
-import { TreeFilter, ProPage, useDialog, downloadByData, useNamespace } from "teek";
-import { ElSwitch, ElInput, ElMessageBox } from "element-plus";
+<script setup lang="tsx">
+import type { DialogFormProps, ProPageInstance, PageColumn } from "@teek/components";
+import type { User } from "@/common/api/user/user";
+import { ElInput, ElMessageBox, ElSwitch } from "element-plus";
 import { Key } from "@element-plus/icons-vue";
-import { listDeptTreeList } from "@/common/api/system/dept";
-import { addUser, editUser, removeUser, removeBatch, listPage, type User, exportExcel } from "@/common/api/user/user";
-import { useDictStore } from "@/pinia";
+import { ProPage, downloadByData, useNamespace, useDialog } from "teek";
+import { addUser, editUser, removeUser, removeBatch, listPage, exportExcel } from "@/common/api/user/user";
 import { useChange, usePermission } from "@/composables";
 import { elFormProps, useFormColumns } from "./use-form-columns";
+import { useDictStore } from "@/pinia";
 
 const ns = useNamespace("user");
+
+// 部门管理的用户列表需要传入
+const props = defineProps<{ initRequestParams?: Recordable }>();
 
 const proPageInstance = useTemplateRef<ProPageInstance>("proPageInstance");
 const newPassword = ref("");
 
+const formColumns = useFormColumns(computed(() => props.initRequestParams?.deptId));
+
+const { hasAuth } = usePermission();
+
 const { open } = useDialog();
-
-const resetPassword = () => {
-  open({
-    title: "重置密码",
-    onCancel: () => (newPassword.value = ""),
-    onConfirm: handleConfirm,
-    render: () => {
-      return <ElInput v-model={newPassword.value} placeholder="请输入新密码"></ElInput>;
-    },
-  });
-};
-
-const handleConfirm = () => {
-  if (!newPassword.value) {
-    return;
-  }
-  // editOne({ id: row.id, userId: row.userId, password: newPassword.value }).then(() => {
-  //   proPageInstance.value?.search();
-  // });
-};
 
 const { statusChange } = useChange(
   "username",
@@ -44,7 +30,7 @@ const { statusChange } = useChange(
   () => proPageInstance.value?.search()
 );
 
-const columns: TableColumn<User.UserInfo>[] = [
+const columns: PageColumn<User.UserInfo>[] = [
   { type: "selection", fixed: "left", width: 60 },
   { type: "index", label: "#", width: 60 },
   { prop: "username", label: "用户名称", width: 170, search: { el: "el-input" } },
@@ -80,12 +66,10 @@ const columns: TableColumn<User.UserInfo>[] = [
   { prop: "operation", label: "操作", width: 220, fixed: "right" },
 ];
 
-const { hasAuth } = usePermission();
-
 const dialogFormProps: DialogFormProps = {
   form: {
     elFormProps,
-    columns: useFormColumns(computed(() => initRequestParams.deptId)).columns,
+    columns: formColumns,
   },
   id: ["id", "userId"],
   addApi: addUser,
@@ -100,18 +84,30 @@ const dialogFormProps: DialogFormProps = {
   dialog: {
     title: (_, status) => (status === "add" ? "新增" : "编辑"),
     width: "45%",
-    height: 420,
+    height: 700,
     top: "5vh",
     closeOnClickModal: false,
   },
 };
 
-const initRequestParams = reactive({
-  deptId: "",
-});
+const resetPassword = () => {
+  open({
+    title: "重置密码",
+    onCancel: () => (newPassword.value = ""),
+    onConfirm: handleConfirm,
+    render: () => {
+      return <ElInput v-model={newPassword.value} placeholder="请输入新密码"></ElInput>;
+    },
+  });
+};
 
-const handleTreeChange = (nodeId: string | TreeKey[]) => {
-  initRequestParams.deptId = nodeId + "";
+const handleConfirm = () => {
+  if (!newPassword.value) {
+    return;
+  }
+  // editOne({ id: row.id, userId: row.userId, password: newPassword.value }).then(() => {
+  //   proPageInstance.value?.search();
+  // });
 };
 
 const exportFile = (_: Record<string, any>[], searchParam: Record<string, any>) => {
@@ -125,55 +121,20 @@ const exportFile = (_: Record<string, any>[], searchParam: Record<string, any>) 
 
 <template>
   <div :class="ns.b()">
-    <TreeFilter :requestApi="listDeptTreeList" @change="handleTreeChange" id="value">
-      <template #default="{ node }">
-        <Icon v-if="node.data.icon" :icon="node.data.icon" class="inline-block"></Icon>
-        <span>{{ node.label }}</span>
+    <ProPage
+      ref="proPageInstance"
+      :request-api="listPage"
+      :columns
+      :dialog-form-props
+      :export-file
+      :disabled-tool-button="!hasAuth('system:user:export') ? ['export'] : []"
+      :init-request-params
+    >
+      <template #operation-after>
+        <el-button v-auth="['system:user:passwordReset']" link size="small" :icon="Key" @click="resetPassword">
+          重置密码
+        </el-button>
       </template>
-    </TreeFilter>
-
-    <div class="user-table">
-      <ProPage
-        ref="proPageInstance"
-        :request-api="listPage"
-        :columns
-        :init-request-params="initRequestParams"
-        :search-props="{ searchCols: { xs: 1, sm: 1, md: 2, lg: 3, xl: 3 } }"
-        style="display: flex; flex-direction: column"
-        :dialog-form-props
-        :export-file
-        :disabled-tool-button="!hasAuth('system:user:export') ? ['export'] : []"
-      >
-        <template #operation-after>
-          <el-button v-auth="['system:user:passwordReset']" link size="small" :icon="Key" @click="resetPassword">
-            重置密码
-          </el-button>
-        </template>
-      </ProPage>
-    </div>
+    </ProPage>
   </div>
 </template>
-
-<style lang="scss" scoped>
-@use "@teek/styles/mixins/bem" as *;
-
-@include b(user) {
-  display: flex;
-  height: 100%;
-
-  .iconify {
-    margin-right: 5px;
-    vertical-align: -2px;
-  }
-
-  .user-table {
-    display: flex;
-    width: calc(100% - 230px);
-    height: 100%;
-
-    :deep(.#{$el-namespace}-dialog__body) {
-      margin-left: 20px;
-    }
-  }
-}
-</style>

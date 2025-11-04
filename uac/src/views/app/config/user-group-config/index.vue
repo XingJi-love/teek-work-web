@@ -1,7 +1,6 @@
 <script setup lang="tsx" name="UserGroup">
-import type { DialogFormProps, ProPageInstance, TableColumn } from "teek";
+import type { DialogFormProps, ProPageInstance, PageColumn } from "teek";
 import type { UserGroup } from "@/common/api/user/userGroup";
-import type { App } from "@/common/api/application/app";
 import { ElMessageBox, type TreeKey } from "element-plus";
 import {
   listPage,
@@ -44,7 +43,7 @@ const transformData = (data: UserGroup.UserGroupInfo[]) => {
 };
 
 // 表格列配置项
-const columns: TableColumn<UserGroup.UserGroupInfo>[] = [
+const columns: PageColumn<UserGroup.UserGroupInfo>[] = [
   { type: "selection", fixed: "left", width: 10 },
   { prop: "groupName", label: "用户组名", minWidth: 120, search: { el: "el-input" } },
   { prop: "intro", label: "描述", minWidth: 120 },
@@ -175,7 +174,6 @@ const exportFile = (_: Record<string, any>[], searchParam: Record<string, any>) 
         :columns
         :search-props="{ searchCols: { xs: 1, sm: 1, md: 3, lg: 3, xl: 3 } }"
         :dialog-form-props
-        :border="false"
         @row-click="handleRowClick"
         :transform-data="transformData"
         highlight-current-row

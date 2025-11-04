@@ -66,11 +66,5 @@ const dialogFormProps: DialogFormProps = {
 </script>
 
 <template>
-  <ProTable
-    :request-api="listCategoryPage"
-    :init-request-params
-    :columns="tableColumns"
-    :dialog-form-props
-    :search-props="{ searchCols: { xs: 1, sm: 1, md: 2, lg: 3, xl: 3 } }"
-  ></ProTable>
+  <ProTable :request-api="listCategoryPage" :init-request-params :columns="tableColumns" :dialog-form-props></ProTable>
 </template>

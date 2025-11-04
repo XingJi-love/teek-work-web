@@ -1,5 +1,5 @@
 <script setup lang="ts" name="DictData">
-import type { DialogFormProps, TableColumn } from "@teek/components";
+import type { DialogFormProps, PageColumn } from "@teek/components";
 import { ElMessageBox } from "element-plus";
 import { Plus } from "@element-plus/icons-vue";
 import { ProPage, downloadByData } from "teek";
@@ -26,7 +26,7 @@ const initRequestParams = reactive({
   dictCode: computed(() => props.dictCode),
 });
 
-const columns: TableColumn<DictData.DictDataInfo>[] = [
+const columns: PageColumn<DictData.DictDataInfo>[] = [
   { type: "index", label: "#", width: 80 },
   { prop: "dictLabel", label: "字典标签", align: "left", search: { el: "el-input" } },
   { prop: "dictValue", label: "字典键值" },
@@ -73,7 +73,6 @@ const exportFile = (_: Record<string, any>[], searchParam: Record<string, any>) 
     :request-api="!isCascade ? listPage : listDataTreeTable"
     :columns="columns"
     :init-request-params="initRequestParams"
-    :search-props="{ searchCols: { xs: 1, sm: 1, md: 2, lg: 3, xl: 3 } }"
     :page-scope="!isCascade"
     :dialogFormProps
     :exportFile

@@ -1,5 +1,5 @@
 <script setup lang="tsx" name="OperatorLog">
-import type { ProPageInstance, TableColumn } from "teek";
+import type { ProPageInstance, PageColumn } from "teek";
 import type { OperaLog } from "@/common/api/monitor/operaLog";
 import { ElMessageBox, ElMessage } from "element-plus";
 import { Delete } from "@element-plus/icons-vue";
@@ -70,7 +70,7 @@ const sortChange = (data: { column: any; prop: string; order: any }) => {
   initRequestParams.orderRuleList = [{ column: data.prop, type: data.order === "descending" ? "desc" : "asc" }];
 };
 
-const columns: TableColumn<OperaLog.OperaLogInfo>[] = [
+const columns: PageColumn<OperaLog.OperaLogInfo>[] = [
   { type: "selection", fixed: "left", width: 80 },
   { prop: "operaId", label: "操作编号", width: 170 },
   { prop: "title", label: "模块标题", search: { el: "el-input" } },
@@ -128,7 +128,6 @@ const exportFile = (_: Record<string, any>[], searchParam: Record<string, any>) 
       :init-request-params="initRequestParams"
       :columns
       :search-props="{ searchCols: { xs: 1, sm: 1, md: 3, lg: 5, xl: 5 } }"
-      :border="false"
       @sort-change="sortChange"
       :default-sort="{ prop: 'loginTime', order: 'descending' }"
       :export-file

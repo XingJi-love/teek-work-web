@@ -1,5 +1,5 @@
 <script setup lang="tsx" name="RoleLinkUser">
-import type { DialogFormProps, TableColumn } from "teek";
+import type { DialogFormProps, PageColumn } from "teek";
 import { ProPage } from "teek";
 import { addUsersToRole, editUserRoleLinkInfo, removeUserFromRole } from "@/common/api/system/role";
 import { listUserLinkByRoleId, type User } from "@/common/api/user/user";
@@ -19,7 +19,7 @@ const requestParam = reactive({ roleId: props.roleId });
 watchEffect(() => (requestParam.roleId = props.roleId));
 
 // 表格列配置项
-const columns: TableColumn<User.UserLinkInfo>[] = [
+const columns: PageColumn<User.UserLinkInfo>[] = [
   { type: "selection", fixed: "left", width: 10 },
   { prop: "username", label: "用户名称", minWidth: 120, search: { el: "el-input" } },
   { prop: "nickname", label: "用户昵称", minWidth: 120, search: { el: "el-input" } },
@@ -71,7 +71,6 @@ const dialogFormProps: DialogFormProps = {
       :columns
       :search-props="{ searchCols: { xs: 1, sm: 1, md: 3, lg: 3, xl: 3 } }"
       :dialog-form-props
-      :border="false"
       row-key="linkId"
       height="100%"
       :init-show-search="false"

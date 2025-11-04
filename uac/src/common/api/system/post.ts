@@ -20,12 +20,12 @@ export namespace Post {
 
 const baseUri = "/system/post";
 
-export const list = () => {
-  return http.get<httpNs.Response<Post.PostInfo[]>>(`${baseUri}/list`);
+export const list = (params?: Partial<Post.PostInfo>) => {
+  return http.get<httpNs.Response<Post.PostInfo[]>>(`${baseUri}/list`, params);
 };
 
-export const listPage = () => {
-  return http.get<httpNs.Page<Post.PostInfo[]>>(`${baseUri}/listPage`);
+export const listPage = (params?: Partial<Post.PostInfo>) => {
+  return http.get<httpNs.Page<Post.PostInfo[]>>(`${baseUri}/listPage`, params);
 };
 
 /**

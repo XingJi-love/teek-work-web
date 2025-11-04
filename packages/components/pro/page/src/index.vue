@@ -204,7 +204,8 @@ function usePageSearchInit() {
       }
 
       timer = setTimeout(async () => {
-        for (const column of newValue) initOptionsMap(column.search?.options ?? column.options, column.prop || "");
+        for (const column of newValue)
+          initOptionsMap(column.search?.options ?? column.options, column.search?.prop || column.prop || "");
       }, 1);
     },
     { deep: true, immediate: true }

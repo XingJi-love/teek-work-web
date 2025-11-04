@@ -1,5 +1,5 @@
 <script setup lang="tsx" name="DictType">
-import type { DialogFormProps, TableColumn } from "@teek/components";
+import type { DialogFormProps, PageColumn } from "@teek/components";
 import type { DictType } from "@/common/api/system/dictType";
 import { ElLink, ElMessageBox } from "element-plus";
 import { ProPage, BlankDrawer, PointTag, downloadByData } from "teek";
@@ -29,7 +29,7 @@ const isCascadeColorMap: Record<string, any> = {
   1: "#395ae3",
 };
 
-const columns: TableColumn<DictType.DictTypeInfo>[] = [
+const columns: PageColumn<DictType.DictTypeInfo>[] = [
   { type: "index", label: "#", width: 80 },
   {
     prop: "dictCode",
@@ -65,7 +65,7 @@ const dialogFormProps: DialogFormProps = {
     columns: useFormColumns(computed(() => "")).dictTypeColumns,
   },
   id: ["id"],
-  addApi: addDictType,
+  addApi: data => addDictType({ ...data, appId: initRequestParams.appId }),
   editApi: editDictType,
   removeApi: removeDictType,
   dialog: {
@@ -93,7 +93,6 @@ const exportFile = (_: Record<string, any>[], searchParam: Record<string, any>) 
         :request-api="listPage"
         :columns
         :init-request-params="initRequestParams"
-        :search-props="{ searchCols: { xs: 1, sm: 1, md: 2, lg: 3, xl: 3 } }"
         :dialogFormProps
         :export-file
       ></ProPage>

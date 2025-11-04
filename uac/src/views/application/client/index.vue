@@ -1,5 +1,5 @@
 <script setup lang="tsx" name="Client">
-import type { DialogFormProps, ProPageInstance, TableColumn } from "teek";
+import type { DialogFormProps, ProPageInstance, PageColumn } from "teek";
 import type { Client } from "@/common/api/application/client";
 import { ElMessageBox, ElSwitch } from "element-plus";
 import { ProPage, downloadByData, useNamespace } from "teek";
@@ -26,7 +26,7 @@ const { statusChange } = useChange(
   () => proPageInstance.value?.search()
 );
 
-const columns: TableColumn<Client.ClientInfo>[] = [
+const columns: PageColumn<Client.ClientInfo>[] = [
   { type: "selection", fixed: "left", width: 40 },
   { prop: "clientId", label: "客户端 ID", width: 270, search: { el: "el-input" } },
   { prop: "clientKey", label: "客户端 Key", width: 160, search: { el: "el-input" } },
@@ -113,7 +113,6 @@ const exportFile = (_: Record<string, any>[], searchParam: Record<string, any>) 
       ref="proPageInstance"
       :request-api="listPage"
       :columns
-      :search-props="{ searchCols: { xs: 1, sm: 1, md: 2, lg: 3, xl: 3 } }"
       :dialog-form-props
       :export-file
       :disabled-tool-button="!hasAuth('system:client:export') ? ['export'] : []"

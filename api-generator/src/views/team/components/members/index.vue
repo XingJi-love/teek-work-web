@@ -243,7 +243,6 @@ const inviteMemberList = async () => {
       :init-request-params
       :columns
       :search-props="{ searchCols: { xs: 1, sm: 1, md: 2, lg: 5, xl: 5 } }"
-      :border="false"
     >
       <template #tableHeader>
         <el-button type="primary" :icon="Plus" @click="handleInvite" :disabled="teamRole === '普通成员'">

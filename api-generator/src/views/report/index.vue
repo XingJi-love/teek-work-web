@@ -67,7 +67,6 @@ onMounted(async () => {
     :init-request-params
     :columns
     :dialog-form-props
-    :search-props="{ searchCols: { xs: 1, sm: 1, md: 2, lg: 3, xl: 3 } }"
     :disabled-tool-button="reportInfo?.allowExport == 0 ? ['export'] : []"
     :pagination-props="{ pageSize: reportInfo?.pageSize || 20 }"
     :export-file

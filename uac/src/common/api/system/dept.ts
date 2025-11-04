@@ -38,6 +38,14 @@ export namespace Dept {
 
 const baseUri = "/system/dept";
 
+export const list = (params?: Partial<Dept.DeptInfo>) => {
+  return http.get<httpNs.Response<Dept.DeptInfo[]>>(`${baseUri}/list`, params);
+};
+
+export const listPage = (params?: Partial<Dept.DeptInfo>) => {
+  return http.get<httpNs.Page<Dept.DeptInfo[]>>(`${baseUri}/listPage`, params);
+};
+
 /**
  * 查询部门树列表
  */

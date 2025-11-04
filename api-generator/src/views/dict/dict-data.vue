@@ -1,5 +1,5 @@
 <script setup lang="ts" name="DictData">
-import type { DialogFormProps, TableColumn } from "@teek/components";
+import type { DialogFormProps, PageColumn } from "@teek/components";
 import type { DictData } from "@/common/api/dictData";
 import { ElMessageBox } from "element-plus";
 import { Plus } from "@element-plus/icons-vue";
@@ -26,7 +26,7 @@ const initRequestParams = reactive({
   dictCode: computed(() => props.dictCode),
 });
 
-const columns: TableColumn<DictData.DictDataInfo>[] = [
+const columns: PageColumn<DictData.DictDataInfo>[] = [
   { type: "index", label: "#", width: 80 },
   { prop: "dictLabel", label: "字典标签", align: "left", search: { el: "el-input" } },
   { prop: "dictValue", label: "字典键值" },

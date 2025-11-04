@@ -1,5 +1,5 @@
 <script setup lang="tsx" name="RoleLink">
-import type { DialogFormProps, ProPageInstance, TableColumn, TreeFilterInstance } from "teek";
+import type { DialogFormProps, ProPageInstance, PageColumn, TreeFilterInstance } from "teek";
 import type { TreeKey } from "element-plus";
 import { ElMessageBox, ElSwitch } from "element-plus";
 import { TreeFilter, ProPage, downloadByData } from "teek";
@@ -41,7 +41,7 @@ const transformData = (data: Role.RoleInfo[]) => {
   data[0] && proPageInstance.value?.proTableInstance?.getElTableInstance()?.setCurrentRow(data[0]);
 };
 
-const columns: TableColumn<Role.RoleInfo>[] = [
+const columns: PageColumn<Role.RoleInfo>[] = [
   { type: "selection", fixed: "left", width: 40 },
   { prop: "roleCode", label: "角色编码", search: { el: "el-input" } },
   { prop: "roleName", label: "角色名称", search: { el: "el-input" } },
@@ -199,7 +199,6 @@ const exportFile = (_: Record<string, any>[], searchParam: Record<string, any>) 
         :columns
         :search-props="{ searchCols: { xs: 1, sm: 1, md: 3, lg: 3, xl: 3 } }"
         :dialog-form-props
-        :border="false"
         @row-click="handleRowClick"
         :transform-data="transformData"
         highlight-current-row

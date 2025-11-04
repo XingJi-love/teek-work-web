@@ -1,5 +1,5 @@
 <script setup lang="tsx" name="UserGroupLinkRole">
-import type { DialogFormProps, ProTableInstance, TableColumn } from "teek";
+import type { DialogFormProps, ProTableInstance, PageColumn } from "teek";
 import { ProTable } from "teek";
 import { elFormProps, useFormColumns } from "./link-role-form-columns";
 import { listRoleLinkByGroupId, removeUserGroupFromRole, type Role } from "@/common/api/system/role";
@@ -21,7 +21,7 @@ watchEffect(() => (requestParam.userGroupId = props.userGroupId));
 const proTableRef = shallowRef<ProTableInstance>();
 
 // 表格列配置项
-const columns: TableColumn<Role.RoleLinkInfo>[] = [
+const columns: PageColumn<Role.RoleLinkInfo>[] = [
   { type: "selection", fixed: "left", width: 10 },
   { prop: "roleName", label: "角色名称", minWidth: 120, search: { el: "el-input" } },
   { prop: "roleCode", label: "角色编码", minWidth: 120, search: { el: "el-input" } },
@@ -71,7 +71,6 @@ const dialogFormProps: DialogFormProps = {
       :columns
       :search-cols="{ xs: 1, sm: 1, md: 3, lg: 3, xl: 3 }"
       :dialog-form-props
-      :border="false"
       row-key="linkId"
       height="100%"
       :init-show-search="false"

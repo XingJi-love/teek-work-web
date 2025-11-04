@@ -3,11 +3,13 @@ import type { App } from "@/common/api/application/app";
 import type { DialogFormColumn } from "@teek/components";
 import { UserSelect } from "@teek/components";
 import { list } from "@/common/api/user/user";
+import { useDictStore } from "@/pinia";
 
 const rules = reactive<FormRules>({
   clientId: [{ required: true, message: "请选择客户端", trigger: "blur" }],
   appCode: [{ required: true, message: "请输入应用编码", trigger: "blur" }],
   appName: [{ required: true, message: "请输入应用名称", trigger: "blur" }],
+  appType: [{ required: true, message: "请选择应用类型", trigger: "blur" }],
 });
 
 export const elFormProps = {
@@ -36,6 +38,13 @@ export const useFormColumns = (options: ComputedRef<any>, defaultValue: Computed
       label: "应用名称",
       el: "el-input",
       elProps: { clearable: true, placeholder: "请输入 角色名称" },
+    },
+    {
+      prop: "appType",
+      label: "应用类型",
+      el: "el-select",
+      options: () => useDictStore().getDictData("sys_app_type"),
+      optionField: { value: "dictValue", label: "dictLabel" },
     },
     {
       prop: "owner",

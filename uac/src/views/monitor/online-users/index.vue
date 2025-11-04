@@ -1,5 +1,5 @@
 <script setup lang="tsx" name="OnlineUsers">
-import type { ProPageInstance, TableColumn } from "teek";
+import type { ProPageInstance, PageColumn } from "teek";
 import type { OnlineUser } from "@/common/api/monitor/onlineUser";
 import { ProPage, useNamespace } from "teek";
 import { forceLogout, listPage } from "@/common/api/monitor/onlineUser";
@@ -23,7 +23,7 @@ const sortChange = (data: { column: any; prop: string; order: any }) => {
 
 const { userInfo } = useUserStore();
 
-const columns: TableColumn<OnlineUser.OnlineUserInfo>[] = [
+const columns: PageColumn<OnlineUser.OnlineUserInfo>[] = [
   { prop: "username", label: "用户账号", search: { el: "el-input" } },
   { prop: "nickname", label: "用户昵称" },
   { prop: "deptId", label: "所属部门", options: () => listDeptTreeList() },
@@ -66,7 +66,6 @@ const columns: TableColumn<OnlineUser.OnlineUserInfo>[] = [
       :init-request-params="initRequestParams"
       :columns
       :search-props="{ searchCols: { xs: 1, sm: 1, md: 3, lg: 5, xl: 5 } }"
-      :border="false"
       @sort-change="sortChange"
       :default-sort="{ prop: 'loginTime', order: 'descending' }"
       :disabled-tool-button="!hasAuth('system:onlineUsers:export') ? ['export'] : []"

@@ -1,5 +1,5 @@
 <script setup lang="tsx" name="App">
-import type { DialogFormProps, ProPageInstance, TableColumn, TreeFilterInstance } from "teek";
+import type { DialogFormProps, ProPageInstance, PageColumn, TreeFilterInstance } from "teek";
 import type { TreeKey } from "element-plus";
 import { ElMessageBox, ElSwitch } from "element-plus";
 import { TreeFilter, ProPage, downloadByData, useNamespace } from "teek";
@@ -33,10 +33,17 @@ const initRequestParams = reactive({
   clientId: "",
 });
 
-const columns: TableColumn<App.AppInfo>[] = [
+const columns: PageColumn<App.AppInfo>[] = [
   { type: "selection", fixed: "left", width: 80 },
-  { prop: "appCode", label: "应用编码", search: { el: "el-input" } },
   { prop: "appName", label: "应用名称", search: { el: "el-input" } },
+  { prop: "appCode", label: "应用编码", search: { el: "el-input" } },
+  {
+    prop: "appType",
+    label: "应用类型",
+    search: { el: "el-select" },
+    options: () => useDictStore().getDictData("sys_app_type"),
+    optionField: { value: "dictValue", label: "dictLabel" },
+  },
   {
     prop: "status",
     label: "状态",
@@ -62,7 +69,8 @@ const columns: TableColumn<App.AppInfo>[] = [
     },
   },
   { prop: "orderNum", label: "显示顺序" },
-  { prop: "createTime", label: "创建时间" },
+  { prop: "updateById", label: "更新人", formatValue: (_, { row }) => `${row.updateBy} ${row.updateById}` },
+  { prop: "updateTime", label: "更新时间" },
   { prop: "operation", label: "操作", width: 160, fixed: "right" },
 ];
 
@@ -96,7 +104,7 @@ const dialogFormProps: DialogFormProps = {
   dialog: {
     title: (_, status) => (status === "add" ? "新增" : "编辑"),
     width: "45%",
-    height: 250,
+    height: 400,
     top: "5vh",
     closeOnClickModal: false,
   },
@@ -137,7 +145,6 @@ const exportFile = (_: Record<string, any>[], searchParam: Record<string, any>) 
         :request-api="listAppPage"
         :columns
         :init-request-params="initRequestParams"
-        :search-props="{ searchCols: { xs: 1, sm: 1, md: 2, lg: 3, xl: 3 } }"
         :dialogFormProps="dialogFormProps"
         :export-file
         :disabled-tool-button="!hasAuth('system:app:export') ? ['export'] : []"

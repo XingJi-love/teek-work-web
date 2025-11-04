@@ -1,6 +1,6 @@
 <script setup lang="tsx" name="File">
 import type { TreeKey } from "element-plus";
-import type { ProPageInstance, TableColumn, TableRow, TreeFilterInstance } from "@teek/components";
+import type { ProPageInstance, PageColumn, TableRow, TreeFilterInstance } from "@teek/components";
 import type { File } from "@/common/api/file";
 import { View, Delete } from "@element-plus/icons-vue";
 import { TreeFilter, ProPage, downloadByData, message } from "teek";
@@ -48,7 +48,7 @@ const handleDelete = (row: TableRow<File.FileInfo>) => {
   });
 };
 
-const columns: TableColumn<File.FileInfo>[] = [
+const columns: PageColumn<File.FileInfo>[] = [
   { type: "selection", fixed: "left", width: 80 },
   {
     prop: "fileKey",
