@@ -372,7 +372,7 @@ defineExpose(expose);
       @leave-cell-edit="handleLeaveCellEdit"
       @register="handleTableRegister"
     >
-      <template #head-right-after>
+      <template #head-tool-after>
         <el-tooltip
           v-if="(toolButton === true || (!isBoolean(toolButton) && toolButton?.includes('search'))) && columns.length"
           content="隐藏/展开搜索"
@@ -385,7 +385,7 @@ defineExpose(expose);
           />
         </el-tooltip>
 
-        <slot name="head-right-after" />
+        <slot name="head-tool-after" />
       </template>
 
       <!-- 拓展 ProTable 顶栏左侧按钮，适配 DialogForm 的 API -->
