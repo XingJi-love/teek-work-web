@@ -2,7 +2,7 @@
 import type { FormColumn, ProFormInstance } from "@teek/components/pro/form";
 import type { FormItemColumnProps } from "@teek/components/pro/form-item";
 import type { EditProps, EditEmits } from "./types";
-import { computed, ref, useTemplateRef, watch, nextTick } from "vue";
+import { computed, ref, useTemplateRef, watch, nextTick, reactive } from "vue";
 import { setProp } from "@teek/components/pro/helper";
 import ProForm from "@teek/components/pro/form";
 
@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<EditProps>(), {
 
 const emits = defineEmits<EditEmits>();
 
-const model = defineModel<Record<string, any>>({ default: () => ({}) });
+const model = defineModel<Record<string, any>>({ default: () => reactive({}) });
 
 const proFormInstance = useTemplateRef<ProFormInstance>("proFormInstance");
 

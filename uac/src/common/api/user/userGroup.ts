@@ -53,6 +53,11 @@ export namespace UserGroup {
     groupName: string;
     disabled: boolean;
   }
+
+  export interface UserGroupTree {
+    groupId: string;
+    groupName: string;
+  }
 }
 
 const baseUri = "/system/userGroup";
@@ -63,6 +68,10 @@ export const list = (params: Partial<UserGroup.UserGroupInfo>) => {
 
 export const listPage = (params: Partial<UserGroup.UserGroupInfo>) => {
   return http.get<httpNs.Page<UserGroup.UserGroupInfo[]>>(`${baseUri}/listPage`, params);
+};
+
+export const getAppTreeList = () => {
+  return http.get<httpNs.Page<UserGroup.UserGroupTree[]>>(`${baseUri}/treeList`);
 };
 
 /**

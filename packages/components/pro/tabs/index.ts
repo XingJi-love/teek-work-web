@@ -3,6 +3,6 @@ import index from "./src/index.vue";
 
 export type * from "./src/types";
 
-export const Description = useInstall(index);
+export const ProTabs = useInstall(index);
 
 export default index;

@@ -80,7 +80,7 @@ const proTableProps = computed(() => {
           size: "small",
           disabled: props.dialogFormProps?.disableEdit,
         },
-        show: props.dialogFormProps?.editApi ? true : props.dialogFormProps?.useEdit,
+        show: props.dialogFormProps?.editApi ? true : !!props.dialogFormProps?.useEdit,
         el: "el-link",
         icon: Edit,
         onClick: ({ row }) => dialogFormInstance.value?.handleEdit(row),
@@ -96,7 +96,7 @@ const proTableProps = computed(() => {
         confirm: {
           props: { title: "你确定删除吗?" },
         },
-        show: props.dialogFormProps?.removeApi ? true : props.dialogFormProps?.useRemove,
+        show: props.dialogFormProps?.removeApi ? true : !!props.dialogFormProps?.useRemove,
         el: "el-link",
         icon: Delete,
         onConfirm: ({ row }) => dialogFormInstance.value?.handleRemove(row),
@@ -382,6 +382,7 @@ defineExpose(expose);
             :disabled="disabledToolButton?.includes('search')"
             :icon="Search"
             @click="initShowSearch = !initShowSearch"
+            class="head__tool-button"
           />
         </el-tooltip>
 
@@ -435,7 +436,7 @@ defineExpose(expose);
 
       <template
         v-for="slot in Object.keys($slots).filter(
-          key => !['head-right-after', 'head-left', 'operation-before', 'operation-after'].includes(key)
+          key => !['head-tool-after', 'head-left', 'operation-before', 'operation-after'].includes(key)
         )"
         #[slot]="scope"
       >

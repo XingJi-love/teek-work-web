@@ -278,7 +278,7 @@ export interface TableColumn<T extends Record<string, any> = any>
   /**
    * el 组件的插槽
    */
-  elSlots?: { [slotName: string]: (data: TableRenderParams) => RenderTypes };
+  elSlots?: { [slotName: string]: (data: TableRenderParams & Record<string, any>) => RenderTypes };
   /**
    * 其他扩展
    */

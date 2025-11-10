@@ -120,8 +120,8 @@ const tabEnums: TabEnum[] = [
     components: LinkUser,
     elProps: computed(() => {
       return {
-        appId: "requestParam.appId",
-        userGroupId: "clickRowInfo.value?.groupId",
+        appId: requestParam.appId,
+        userGroupId: clickRowInfo.value?.groupId,
       };
     }),
   },
@@ -131,8 +131,8 @@ const tabEnums: TabEnum[] = [
     components: LinkRole,
     elProps: computed(() => {
       return {
-        appId: "requestParam.appId",
-        userGroupId: "clickRowInfo.value?.groupId",
+        appId: requestParam.appId,
+        userGroupId: clickRowInfo.value?.groupId,
       };
     }),
   },

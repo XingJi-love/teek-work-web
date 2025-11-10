@@ -1,19 +1,9 @@
 <script setup lang="ts" name="Descriptions">
+import type { DescriptionProps } from "./types";
 import { User } from "@element-plus/icons-vue";
 import { useNamespace } from "teek";
 
 const ns = useNamespace("descriptions");
-
-interface DescriptionItem {
-  value: string;
-  label: string;
-  span?: number;
-}
-
-export interface DescriptionProps {
-  title?: string;
-  data?: DescriptionItem[];
-}
 
 // 接受父组件参数，配置默认值
 withDefaults(defineProps<DescriptionProps>(), {

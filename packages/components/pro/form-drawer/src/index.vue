@@ -2,7 +2,7 @@
 import type { ProFormInstance } from "@teek/components/pro/form";
 import type { FormItemColumnProps } from "@teek/components/pro/form-item";
 import type { ProFormDrawerEmits, ProFormDrawerProps } from "./types";
-import { useTemplateRef } from "vue";
+import { reactive, useTemplateRef } from "vue";
 import { ProForm } from "@teek/components/pro/form";
 import { ProDrawer } from "@teek/components/pro/drawer";
 
@@ -15,7 +15,7 @@ withDefaults(defineProps<ProFormDrawerProps>(), {
 
 const emits = defineEmits<ProFormDrawerEmits>();
 
-const model = defineModel<Record<string, any>>({ default: () => ({}) });
+const model = defineModel<Record<string, any>>({ default: () => reactive({}) });
 const drawerVisible = defineModel("visible", { default: false });
 
 const proFormInstance = useTemplateRef<ProFormInstance>("proFormInstance");

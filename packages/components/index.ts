@@ -21,6 +21,7 @@ export * from "./pro/page";
 export * from "./pro/pagination";
 export * from "./pro/search";
 export * from "./pro/table";
+export * from "./pro/tabs";
 export * from "./pro/tree-filter";
 
 export * from "./editor/code-mirror";

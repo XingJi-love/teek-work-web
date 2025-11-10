@@ -3,7 +3,7 @@ import type { FormInstance, FormItemProp, FormValidateCallback } from "element-p
 import type { FormColumn } from "@teek/components/pro/form";
 import type { FormItemColumnProps } from "@teek/components/pro/form-item";
 import type { ProFormGroupProps, ProFormGroupEmits } from "./types";
-import { computed, toValue } from "vue";
+import { computed, reactive, toValue } from "vue";
 import { ElCard, ElIcon } from "element-plus";
 import { ProForm, ProFormMain, useProFormFn, useProFormMainFn } from "@teek/components/pro/form";
 import { useNamespace } from "@teek/composables";
@@ -38,7 +38,7 @@ const emits = defineEmits<ProFormGroupEmits>();
 
 const ns = useNamespace("pro-form-group");
 
-const model = defineModel<Record<string, any>>({ default: () => ({}) });
+const model = defineModel<Record<string, any>>({ default: () => reactive({}) });
 
 // 最终的 Props
 const finalProps = computed(() => {
