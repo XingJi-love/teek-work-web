@@ -1,7 +1,7 @@
 <script setup lang="tsx" name="UserGroupLinkUser">
-import type { DialogFormProps, ProTableInstance, PageColumn } from "teek";
+import type { DialogFormProps, PageColumn } from "teek";
 import type { User } from "@/common/api/user/user";
-import { ProTable } from "teek";
+import { ProPage } from "teek";
 import { addUsersToGroup, editUserGroupLinkInfo, removeUserFromUserGroup } from "@/common/api/user/userGroup";
 import { listUserLinkByGroupId } from "@/common/api/user/user";
 import { usePermission } from "@/composables";
@@ -18,8 +18,6 @@ const requestParam = reactive({ userGroupId: props.userGroupId });
 
 // 监听 userGroupId，变化后修改关联的表格查询默认值
 watchEffect(() => (requestParam.userGroupId = props.userGroupId));
-
-const proTableRef = shallowRef<ProTableInstance>();
 
 // 表格列配置项
 const columns: PageColumn<User.UserLinkInfo>[] = [
@@ -68,8 +66,7 @@ const dialogFormProps: DialogFormProps = {
 
 <template>
   <div class="link-user-container">
-    <ProTable
-      ref="proTableRef"
+    <ProPage
       :request-api="listUserLinkByGroupId"
       :init-request-params="requestParam"
       :columns
@@ -79,7 +76,7 @@ const dialogFormProps: DialogFormProps = {
       height="100%"
       :init-show-search="false"
       :disabled-tool-button="!hasAuth('system:userGroup:linkUser') ? ['export'] : []"
-    ></ProTable>
+    ></ProPage>
   </div>
 </template>
 

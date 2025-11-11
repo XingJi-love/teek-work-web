@@ -451,7 +451,7 @@ defineExpose(expose);
       v-bind="{
         ...dialogFormProps,
         afterConfirm: (status, result) => {
-          handleSearch(searchParams);
+          result && handleSearch(searchParams);
           dialogFormProps?.afterConfirm && dialogFormProps.afterConfirm(status, result);
         },
       }"

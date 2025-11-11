@@ -17,7 +17,7 @@ const proFormDialogInstance = useTemplateRef<ProDialogFormInstance>("proFormDial
 const dialogProps = computed(() => {
   const { dialog } = props;
 
-  const title = isFunction(dialog?.title) ? dialog?.title(model.value, status.value) : dialog?.title;
+  const title = isFunction(dialog?.title) ? dialog.title(model.value, status.value) : dialog?.title;
   const height = isFunction(dialog?.height) ? dialog.height(model.value, status.value) : dialog?.height;
   return { ...dialog, title, height };
 });

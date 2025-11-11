@@ -73,7 +73,6 @@ const handleTreeChange = (_: string | TreeKey[], data: UserGroup.UserGroupInfo) 
 
 <style lang="scss" scoped>
 @use "@teek/styles/mixins/bem" as *;
-@use "@teek/styles/mixins/namespace" as *;
 
 @include b(user-group-user) {
   display: flex;
